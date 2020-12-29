@@ -1,0 +1,45 @@
+<% include ../partials/header %>
+	<div class="container">
+		<h2>Event Registration Details</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">RegId</th>
+					<th scope="col">Event Name</th>
+					<th scope="col">USN</th>
+					<th scope="col">Reg Date</th>
+					<th scope="col">action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%for( var i=0; i < reg.length; i++){%>
+					<tr>
+						<th scope="row">
+							<%=i+1%>
+						</th>
+						<td>
+							<%=reg[i].Reg_Id%>
+						</td>
+						<td>
+							<%=reg[i].Name%>
+						</td>
+						<td>
+							<%=reg[i].USN%>
+						</td>
+						<td type="date">
+							<%=reg[i].Reg_Date%>
+						</td>
+						<td>
+							<form class="delete-form" action="/student/<%=reg[i].Reg_Id%>?_method=DELETE" method="Post">
+								<button class="btn btn-xs btn-danger " style="margin: 2px">Delete</button>
+							</form>
+						</td>
+					</tr>
+					<%}%>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<a href="/movies">Go back</a>
+	<% include ../partials/footer %>

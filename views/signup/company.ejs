@@ -1,0 +1,32 @@
+<% include ../partials/header %>
+
+<h1 class=" d-flex justify-content-center">
+	Register for Club
+</h1>
+<div class=row>
+	<form action="/register/company" class="mx-auto" method="POST">
+		<div class="form-group">
+			<input class="form-control " type="text" maxlength="20" name="cName" placeholder="Club Name" required>
+		</div>
+		<div class="form-group">
+			<input class="form-control " type="text" maxlength="20" name="cPres" placeholder="CLub President" required>
+		</div>
+		<div class="form-group">
+			<input class="form-control " type="text" name="cInsta" placeholder="Club Insta" required>
+		</div>
+		
+        <div class="form-group">
+			<input class="form-control " type="text" name="cFb" placeholder="Club Fb" required>
+		</div>
+		
+        <div class="form-group">
+			<input class="form-control " type="number" name="cYear" placeholder="Start Year" required>
+		</div>
+		<div class="form-group">
+			<input class="btn  form-control btn-primary" type="submit">
+		</div>
+	</form>
+</div>
+
+
+<% include ../partials/footer %>

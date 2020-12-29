@@ -1,0 +1,40 @@
+<% include ../partials/header %>
+  <div class="container">
+    <h2>Registration Details</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">RegId</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Reg Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%for( var i=0; i < stdeve.length; i++){%>
+          <tr>
+            <th scope="row">
+              <%=i+1%>
+            </th>
+            <td>
+              <%=stdeve[i].Reg_Id%>
+            </td>
+            <td>
+              <%=stdeve[i].SName%>
+            </td>
+            <td>
+              <%=stdeve[i].Email%>
+            </td>
+            <td type="date">
+              <%=stdeve[i].Reg_Date%>
+            </td>
+          </tr>
+          <%}%>
+      </tbody>
+    </table>
+  </div>
+
+  <a href="/movies/<%=stdeve[0].Event_Id%>">Go back</a>
+
+  <% include ../partials/footer %>

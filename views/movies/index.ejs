@@ -1,0 +1,30 @@
+<% include ../partials/header %>
+<div class="container">	
+<header class="jumbotron mt-5">
+	<div class="container">	
+		<h1 class="display-4">EVENTS</h1>
+			  <p class="lead">All Upcoming Events in our college</p>
+			  <% if(currentUser && currentUser.role == 'Admin'){ %>
+		<a class="btn btn-primary btn-lg" href="/movies/new" role="button">Add new Event</a>
+		<%}%>
+	</div>
+</header>
+
+<div class="row" style="display:flex; flex-wrap: wrap;">
+	<% list.forEach((Event)=>{ %>
+		
+	<div class="col-md-3 col-sm-12 mx-1"> 
+		<div class="card mx-auto" >
+			<!-- <img src="" class="card-img-top" alt="..."> -->
+			<div class="card-body">
+				<h5 class="card-title"><%= Event.Name %></h5>
+				<p class="card-text"><%= Event.Venue %></p>
+				<p class="card-text"><%= Event.Last_date %></p>
+			</div>
+			
+			<a href="movies/<%=Event.idEvents%>" class="btn btn-warning">More Info</a>
+		</div>
+	</div>
+	<%})%>
+</div>
+<% include ../partials/footer %>

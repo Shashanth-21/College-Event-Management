@@ -1,0 +1,32 @@
+<% include ../partials/header %>
+    <div class="container">
+		<div class="row mt-5">
+			<div class="col-md-9">
+				<div class="card">
+					<div class="card-body">
+						<h3 class="card-title">
+							Positive Feedback
+						</h3>
+						<p>No of Comments : <%=count%></p>
+					</div>
+				</div>
+				<div class="card-footer text-muted">
+				
+					<%movie.comments.forEach((comment)=>{%>
+						<%if(comment.sent > 0){%>
+						<strong s>
+							<%=comment.author.username%>
+						</strong>
+						<p>
+							<%=comment.text%>
+                        </p>
+                        <hr>
+						<%}})%>
+								
+                    </div>
+			</div>
+		</div>
+	</div>
+
+    <a href="/movies/<%=movie.EventId%>">Go Back </a>
+    <% include ../partials/footer %>

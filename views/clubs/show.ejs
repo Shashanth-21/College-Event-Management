@@ -1,0 +1,31 @@
+<% include ../partials/header %>
+<div class="container">	
+<header class="jumbotron mt-5">
+	<div class="container">	
+		<h1 class="display-4">CLUBS</h1>
+			  <p class="lead">All Clubs in our College</p>
+			
+	</div>
+</header>
+
+<div class="row" style="display:flex; flex-wrap: wrap;">
+	<% list.forEach((club)=>{ %>
+		
+	<div class="col-md-5 col-sm-12 mx-1"> 
+		<div class="card mx-auto" >
+			<!-- <img src="" class="card-img-top" alt="..."> -->
+			<div class="card-body">
+				<h3 class="card-title"><%= club.ClubName %></h5>
+				<p class="card-text">since <%= club.Start_Year%></p>
+				<hr>
+				<p class="card-text">President :<%= club.President %></p>
+                <p class="card-text">Instagram <%= club.Insta_Id%></p>
+                <p class="card-text">Facebook <%= club.Fb_Id%></p>
+             
+			</div>
+
+		</div>
+	</div>
+	<%})%>
+</div>
+<% include ../partials/footer %>
