@@ -170,7 +170,14 @@ router.get("/:id/regs", middleware.isLoggedIn, (request, respond) => {
 
 		if (!err) {
 			console.log(results);
+			if( results.length > 0)
 			respond.render("movies/regs", { stdeve: results, currentUser: request.user });
+			else
+			{
+				request.flash("error","no reg yet");
+				respond.redirect("/movies/"+request.params.id);
+			}
+			
 		}
 		else {
 			console.log(err);
