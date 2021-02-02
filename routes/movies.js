@@ -283,7 +283,7 @@ router.post("/:id/pay/callback", middleware.isLoggedIn, (req, res) => {
 												console.log(Presults);
 
 												req.flash("success", "ID: " + req.body.ORDERID + " Payment Successful");
-												req.logOut();
+												
 												res.redirect("/movies");
 											}
 											else {
