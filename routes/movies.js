@@ -93,7 +93,7 @@ router.post("/:id", middleware.isLoggedIn, (request, respond) => {
 				console.log(Sresult);
 
 				conn.query(
-					'REPLACE INTO Registrations (Event_Id, Reg_Date, Reg_USN)values(?,?,?)', [request.params.id, date, Sresult[0].USN],
+					'REPLACE INTO Registrations (Reg_Id, Event_Id, Reg_Date, Reg_USN)values(?,?,?,?)', [request.params.id+Sresult[0].USN,request.params.id, date, Sresult[0].USN],
 					function (err, results, fields) {
 						if (err) {
 							console.log(err);
@@ -119,7 +119,7 @@ router.post("/:id", middleware.isLoggedIn, (request, respond) => {
 
 
 // Show Page
-router.get("/:id", middleware.isLoggedIn, (request, respond) => {
+router.get("/:id", (request, respond) => {
 	// Movie.findById(request.params.movieId).populate("comments").exec(function(err,foundMovie){
 	// 	if (err){
 	// 	console.log(err);
@@ -262,13 +262,14 @@ router.post("/:id/pay/callback", middleware.isLoggedIn, (req, res) => {
 			if (err)
 				console.log(err);
 			else {
-				console.log(Sresult);
+				//console.log(Sresult);
 
 				conn.query(
-					'REPLACE INTO Registrations (Event_Id, Reg_Date, Reg_USN)values(?,?,?)', [req.params.id, date, Sresult[0].USN],
+					'REPLACE INTO Registrations (Reg_Id, Event_Id, Reg_Date, Reg_USN)values(?,?,?)', [req.params.id+Sresult[0].USN,req.params.id, date, Sresult[0].USN],
 					function (err, Rresults, fields) {
 						if (err) {
 							console.log(err);
+							console.log("Hiiiiiiiiiiiiiiiiiiiii");
 							res.redirect("/movies");
 						}
 						else {
@@ -277,21 +278,23 @@ router.post("/:id/pay/callback", middleware.isLoggedIn, (req, res) => {
 								'SELECT * FROM Registrations WHERE Event_Id=? AND Reg_USN=?', [req.params.id, Sresult[0].USN],
 								function (err1, RESULTS, fields) {
 									if (!err) {
-										console.log(RESULTS);
+										//console.log(RESULTS);
 										conn.query('INSERT INTO Payments values(?,?,?,?)', [req.body.TXNID, RESULTS[0].Reg_Id, req.body.TXNAMOUNT, req.body.TXNDATE], function (err2, Presults, fields) {
 											if (!err) {
-												console.log(Presults);
+												console.log(Presults + "AAAAAAAAAAAAAAAAAAA");
 
 												req.flash("success", "ID: " + req.body.ORDERID + " Payment Successful");
 												
-												res.redirect("/movies");
+												//res.redirect("/movies");
 											}
 											else {
+												console.log("Hiiiiiiiiiiiiiiiiiiiiiiiiii")
 												console.log(err2);
 											}
 										});
 									}
 									else {
+										console.log("wrestdfgvhbjxsdcrftvgbyhnujimcfvgby");
 										console.log(err1);
 									}
 								}
