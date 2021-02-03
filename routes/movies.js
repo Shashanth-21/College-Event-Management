@@ -13,6 +13,7 @@ var Paytm = require("paytmchecksum");
 const checksum_lib = require("../Paytm/checksum");
 const config = require("../Paytm/config");
 const shortid = require('shortid');
+const { SSL_OP_EPHEMERAL_RSA } = require("constants");
 
 const parseUrl = express.urlencoded({ extended: false });
 const parseJson = express.json({ extended: false });
@@ -222,8 +223,9 @@ router.post("/:id/pay", middleware.isLoggedIn, [parseUrl, parseJson], (req, res)
 					params['EMAIL'] = email;
 					console.log(email);
 					console.log(params);
-
 					checksum_lib.genchecksum(params, config.PaytmConfig.key, function (err, checksum) {
+				
+					
 						var txn_url = "https://securegw-stage.paytm.in/theia/processTransaction"; // for staging
 						// var txn_url = "https://securegw.paytm.in/theia/processTransaction"; // for production
 
@@ -232,7 +234,7 @@ router.post("/:id/pay", middleware.isLoggedIn, [parseUrl, parseJson], (req, res)
 							form_fields += "<input type='hidden' name='" + x + "' value='" + params[x] + "' >";
 						}
 						form_fields += "<input type='hidden' name='CHECKSUMHASH' value='" + checksum + "' >";
-
+						
 						res.writeHead(200, { 'Content-Type': 'text/html' });
 						res.write('<html><head><title>Merchant Checkout Page</title></head><body><center><h1>Please do not refresh this page...</h1></center><form method="post" action="' + txn_url + '" name="f1">' + form_fields + '</form><script type="text/javascript">document.f1.submit();</script></body></html>');
 						res.end();
@@ -243,7 +245,7 @@ router.post("/:id/pay", middleware.isLoggedIn, [parseUrl, parseJson], (req, res)
 		});
 
 })
-router.post("/:id/pay/callback", middleware.isLoggedIn, (req, res) => {
+router.post("/:id/pay/callback", (req, res) => {
 	// Route for verifiying payment
 	console.log("Inside Call back");
 	console.log(req.body);
@@ -265,12 +267,12 @@ router.post("/:id/pay/callback", middleware.isLoggedIn, (req, res) => {
 				//console.log(Sresult);
 
 				conn.query(
-					'REPLACE INTO Registrations (Reg_Id, Event_Id, Reg_Date, Reg_USN)values(?,?,?)', [req.params.id+Sresult[0].USN,req.params.id, date, Sresult[0].USN],
+					'REPLACE INTO Registrations (Reg_Id, Event_Id, Reg_USN, Reg_Date) values(?,?,?,?)', [ req.params.id+Sresult[0].USN, req.params.id, Sresult[0].USN, date],
 					function (err, Rresults, fields) {
 						if (err) {
 							console.log(err);
 							console.log("Hiiiiiiiiiiiiiiiiiiiii");
-							res.redirect("/movies");
+							res.redirect("/movies/"+req.params.id+"/pay");
 						}
 						else {
 							console.log(Rresults);
@@ -281,11 +283,11 @@ router.post("/:id/pay/callback", middleware.isLoggedIn, (req, res) => {
 										//console.log(RESULTS);
 										conn.query('INSERT INTO Payments values(?,?,?,?)', [req.body.TXNID, RESULTS[0].Reg_Id, req.body.TXNAMOUNT, req.body.TXNDATE], function (err2, Presults, fields) {
 											if (!err) {
-												console.log(Presults + "AAAAAAAAAAAAAAAAAAA");
+												console.log(Presults );
 
 												req.flash("success", "ID: " + req.body.ORDERID + " Payment Successful");
 												
-												//res.redirect("/movies");
+												res.redirect("/movies");
 											}
 											else {
 												console.log("Hiiiiiiiiiiiiiiiiiiiiiiiiii")

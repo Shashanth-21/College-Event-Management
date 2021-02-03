@@ -3,13 +3,12 @@
 	<div class="container">
 		<div class="row mt-5">
 			<div class="col-md-3">
+					<%if( currentUser && (currentUser.username==club.Admin_Id) ){%>
 				<p class="lead">OPTIONS</p>
 				<ul id="leftButton" class="list-group">
 					More </a>
-					<%if( currentUser && (currentUser.username==club.Admin_Id) ){%>
-
 						<a class="selection" href="/movies/<%=movie.EventId%>/regs">
-							<li class="list-group-item active" style="padding: 1px;">Registration details</li>
+							<li class="list-group-item active" style="padding: 2px; background-color: black; color: white; text-align: center;">Registration details</li>
 						</a>
 
 						<%}%>
@@ -36,20 +35,20 @@
 
 						<% if(currentUser && currentUser.role=='student' && events.Fee==0) {%>
 							<form action="<%=events.idEvents%>?_method=POST" method="Post">
-								<button class="btn btn-xs btn-danger" style="padding: 1px;">Register</button>
+								<button class="btn btn-xs btn-default" style= "background-color: black ; color: white;">Register</button>
 							</form>
 
 							<%} else if( currentUser && currentUser.role=='student' && events.Fee>0 ) {%>
-								<a href="<%=events.idEvents%>/pay" class="btn btn-warning">Register</a>
+								<a href="<%=events.idEvents%>/pay" class="btn btn-xs btn-default" style="background-color:black; color: white;">Register</a>
 								<%}%>
 
 									<%if(currentUser && (currentUser.username==club.Admin_Id)){%>
-										<a class="btn btn-xs btn-warning"
-											style="margin: 2px; text-align: left; width: 115px; "
+										<a class="btn btn-xs btn-default"
+											style="margin: 2px; text-align: center; background-color:black; color:white; width: 115px; "
 											href="<%=movie.EventId%>/edit">Edit</a>
 										<form class="delete-form" action="/movies/<%=movie.EventId%>?_method=DELETE"
 											method="Post">
-											<button class="btn btn-xs btn-danger " style="margin: 2px">Delete</button>
+											<button class="btn btn-xs btn-default  " style="margin: 2px; background-color: black; color:white;">Delete</button>
 											<%}%>
 										</form>
 					</div>
