@@ -5,21 +5,21 @@
 <div class=row>
 	<form action="/movies/<%=event.idEvents%>?_method=PUT" class="mx-auto" method="POST">
 		<div class="form-group">
-			<input class="form-control " type="text" name="eName" placeholder="Name" required value="<%=event.Name%>">
+			<input class="form-control " type="text" name="eName" placeholder="Name" pattern="[A-Z a-z]+"  required value="<%=event.Name%>">
 		</div>
 		<p>Event Date</p>
 		<div class="form-group">
 			<input class="form-control " type="date" name="eDate" placeholder="EventDate" name="trip-start" min="" max="" name="trip-start" min="" max=""  required value="<%=event.date%>">
 		</div>
 		<div class="form-group">
-			<input class="form-control " type="text" name="eVenue" placeholder="Venue" required value="<%=event.Venue%>">
+			<input class="form-control " type="text" name="eVenue" placeholder="Venue"  pattern="[A-Z a-z]+"  required value="<%=event.Venue%>">
 		</div>
 		<p>Last Date for Reg</p>
 		<div class="form-group">
-			<input class="form-control " type="date" name="eLDate" placeholder="Last Date" name="trip-start" min="" max="" required value="<%=event.Last_date%>">
+			<input class="form-control " type="date" name="eLDate" placeholder="Last Date" name="trip-start" min="" max="" pattern="[A-Z a-z]+"  required value="<%=event.Last_date%>">
 		</div>
 		<div class="form-group">
-			<input class="form-control " type="text" name="eFee" placeholder="Fee" required value="<%=event.Fee%>">
+			<input class="form-control " type="number" type="number" min="0" maxlength="10000" name="eFee"  name="eFee" placeholder="Fee" required value="<%=event.Fee%>">
 		</div>
 		<div class="form-group">
 			<input class="btn  form-control btn-primary" type="submit">

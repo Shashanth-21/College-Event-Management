@@ -3,6 +3,8 @@ body {
     margin: 0;
     overflow: hidden;
     height: 100%;
+    font-family: 'Times New Roman', Times, serif;
+    color: #e9ddddfa; 
 }
 
 /* Scale canvas with resize attribute to full size */

@@ -26,8 +26,9 @@
 
 </head>
 <body>
-	<nav class="navbar  navbar-expand-lg navbar-dark bg-dark">
-	<a class="navbar-brand" href="/">RVEMS<i class="material-icons">
+	<nav class="navbar  navbar-expand-lg navbar-light" style="background-color: #f6f0e5;">
+    <img src="https://upload.wikimedia.org/wikipedia/en/a/a7/RVCE_New_Logo.JPG" style="width: 1.2em; height: 1.2em;">
+	<a class="navbar-brand" href="/"> EMS<i class="material-icons">
 			events
 			</i></a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,10 +66,12 @@
 				
 		</div>
 </nav>
-	<div class="container">
-		<%if(error && error.length>0){%> <div class="alert alert-danger" role="alert"><%=error%></div><%}%>
-		<%if(success && success.length>0){%><div class="alert alert-success" role="alert"><%=success%></div><%}%>
-	</div>
+		<div>
+			<%if(error && error.length>0){%> <p class="alert alert-danger" role="alert"><%=error%></p><%}%>
+		<%if(success && success.length>0){%><p class="alert alert-success" role="alert"><%=success%></p><%}%>
+		</div>
+		
+
 
 
 

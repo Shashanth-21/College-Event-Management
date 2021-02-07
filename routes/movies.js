@@ -17,16 +17,20 @@ const { SSL_OP_EPHEMERAL_RSA } = require("constants");
 
 const parseUrl = express.urlencoded({ extended: false });
 const parseJson = express.json({ extended: false });
-
+const bodyparser = require('body-parser');
+const path = require('path');
+const PUBLISHABLE_KEY = "pk_test_51I2K79A5JWiCHFlnwAHeXfeYKBhgR5oUVKISXK9nhLVZ4QonR9yt6gbKt2qGPD7bfyNuIlWmIkAYFOPwvFnylZBE00BJgjaZUL";
+const SECRET_KEY = "sk_test_51I2K79A5JWiCHFln7RDuFVcv9op2KO5nobrnI54Z9LQaarhR4PiBsQ5SRBfYj3OBhuXdEQW6fKGml9jI6Gh58n6y00JSvmh4GH";
+const stripe = require("stripe")(SECRET_KEY);
 router.get("/", (request, respond) => {
 
 	conn.query(
-		'SELECT * FROM Events ORDER BY date',
+		'SELECT * FROM Events ORDER BY date ',
 		function (err, results, fields) {
 			if (err)
 				console.log(err);
 			console.log(results);
-			respond.render("movies/index", { list: results, currentUser: request.user });
+			respond.render("movies/index", { list: results, currentUser: request.user, display: results.slice(0, Math.min(3, results.length)) });
 		}
 	);
 
@@ -45,7 +49,7 @@ router.post("/", middleware.isLoggedIn, (request, respond) => {
 				console.log(request.user.username);
 				console.log(club);
 				conn.query(
-					'INSERT INTO Events(Name,date,Venue,Fee,Last_Date,Club_Code) VALUES (?,?,?,?,?,?)', [body.eName, body.eDate, body.eVenue, body.eFee, body.eLDate, club[0].idClubs],
+					'INSERT INTO Events(Name,date,Venue,Fee,Last_Date,Club_Code,Image) VALUES (?,?,?,?,?,?,?)', [body.eName, body.eDate, body.eVenue, body.eFee, body.eLDate, club[0].idClubs, body.eImage],
 					function (err, results, fields) {
 						if (err)
 							console.log(err);
@@ -94,7 +98,7 @@ router.post("/:id", middleware.isLoggedIn, (request, respond) => {
 				console.log(Sresult);
 
 				conn.query(
-					'REPLACE INTO Registrations (Reg_Id, Event_Id, Reg_Date, Reg_USN)values(?,?,?,?)', [request.params.id+Sresult[0].USN,request.params.id, date, Sresult[0].USN],
+					'REPLACE INTO Registrations (Reg_Id, Event_Id, Reg_Date, Reg_USN)values(?,?,?,?)', [request.params.id + Sresult[0].USN, request.params.id, date, Sresult[0].USN],
 					function (err, results, fields) {
 						if (err) {
 							console.log(err);
@@ -181,11 +185,11 @@ router.get("/:id/regs", middleware.isLoggedIn, (request, respond) => {
 
 });
 // pay info
-router.get("/:id/pay", middleware.isLoggedIn, (request, respond) => {
+router.get("/:id/pay", (request, respond) => {
 	conn.query('SELECT * FROM Events WHERE idEvents = ?', [request.params.id], function (err, results, fields) {
 
 		if (!err) {
-			respond.render("movies/pay", { event: results[0], currentUser: request.user });
+			respond.render("movies/pay", { event: results[0], currentUser: request.user, key: PUBLISHABLE_KEY });
 		}
 		else {
 			console.log(err);
@@ -194,132 +198,170 @@ router.get("/:id/pay", middleware.isLoggedIn, (request, respond) => {
 		//
 	});
 })
+router.post("/:id/pay", function (req, res) {
+
+	// Moreover you can take more details from user 
+	conn.query(
+		'SELECT * FROM Student WHERE Username=?', [req.user.username],
+		function (err, Sresult, fields) {
+			if (err) {
+				console.log(err);
+				res.redirect("/movies");
+			}
+			else {
+				//console.log(Sresult);
+				console.log(req.body);
+				stripe.customers.create({
+					email: req.body.stripeEmail,
+					source: req.body.stripeToken,
+					name: Sresult[0].name,
+					address: {
+						line1: 'TC 9/4 Old MES colony',
+						postal_code: '110092',
+						city: 'New Delhi',
+						state: 'Delhi',
+						country: 'India',
+					},
+					// receipt_email: req.body.stripeEmail
+				})
+					.then((customer) => {
+
+						return stripe.charges.create({
+							amount: req.body.eFee*100,    // Charing Rs 25 
+							description: "Event Fee",
+							currency: 'INR',
+							customer: customer.id
+						});
+					})
+					.then((charge) => {
+						console.log(charge);
+						conn.query(
+							'INSERT INTO Registrations (Reg_Id, Event_Id, Reg_USN, Reg_Date) values(?,?,?,?)', [req.params.id + Sresult[0].USN, req.params.id, Sresult[0].USN, date],
+							function (err, Rresults, fields) {
+								if (err) {
+									console.log(err);
+									console.log("Hiiiiiiiiiiiiiiiiiiiii");
+									res.redirect("/movies/" + req.params.id + "/pay");
+								}
+								else {
+									console.log(Rresults);
+									conn.query(
+										'SELECT * FROM Registrations WHERE Event_Id=? AND Reg_USN=?', [req.params.id, Sresult[0].USN],
+										function (err1, RESULTS, fields) {
+											if (!err) {
+												//console.log(RESULTS);
+												conn.query('INSERT INTO Payments values(?,?,?,?)', [RESULTS[0].Reg_Id+req.params.id+date, RESULTS[0].Reg_Id, req.body.eFee, date], function (err2, Presults, fields) {
+													if (!err) {
+														console.log(Presults);
+
+														req.flash("Thanks for registering to the event");
+
+														res.redirect("/movies");
+													}
+													else {
+														console.log("Hiiiiiiiiiiiiiiiiiiiiiiiiii")
+														console.log(err2);
+													}
+												});
+											}
+											else {
+												console.log("wrestdfgvhbjxsdcrftvgbyhnujimcfvgby");
+												console.log(err1);
+											}
+										}
+									);
+								}
+							});
+						})
+								.catch((err) => {
+								res.send(err)    // If some error occurs 
+							});
+					}
+
+				//request.flash("sucess", "Successfully Registered");
+				//respond.redirect("/movies");
+			});
+	});
+
+// like Address, Name, etc from form 
+
+
 
 // payment post route
 
-router.post("/:id/pay", middleware.isLoggedIn, [parseUrl, parseJson], (req, res) => {
-	var name, email;
-	conn.query(
-		'SELECT * FROM Student WHERE Username=?', [req.user.username],
-		function (err, Sresult, fields) {
-			if (err)
-				console.log(err);
-			else {
-				console.log(Sresult);
-				name = Sresult[0].Username;
-				email = Sresult[0].Email;
-				if (!req.body.eFee) {
-					res.status(400).send('Payment failed')
-				} else {
-					var params = {};
-					params['MID'] = config.PaytmConfig.mid;
-					params['WEBSITE'] = config.PaytmConfig.website;
-					params['CHANNEL_ID'] = 'WEB';
-					params['INDUSTRY_TYPE_ID'] = 'Retail';
-					params['ORDER_ID'] = 'TEST_' + new Date().getTime();
-					params['CUST_ID'] = shortid.generate();
-					params['TXN_AMOUNT'] = req.body.eFee;
-					params['CALLBACK_URL'] = 'http://localhost:3000/movies/' + req.params.id + '/pay/callback';
-					params['EMAIL'] = email;
-					console.log(email);
-					console.log(params);
-					checksum_lib.genchecksum(params, config.PaytmConfig.key, function (err, checksum) {
-				
-					
-						var txn_url = "https://securegw-stage.paytm.in/theia/processTransaction"; // for staging
-						// var txn_url = "https://securegw.paytm.in/theia/processTransaction"; // for production
-
-						var form_fields = "";
-						for (var x in params) {
-							form_fields += "<input type='hidden' name='" + x + "' value='" + params[x] + "' >";
-						}
-						form_fields += "<input type='hidden' name='CHECKSUMHASH' value='" + checksum + "' >";
-						
-						res.writeHead(200, { 'Content-Type': 'text/html' });
-						res.write('<html><head><title>Merchant Checkout Page</title></head><body><center><h1>Please do not refresh this page...</h1></center><form method="post" action="' + txn_url + '" name="f1">' + form_fields + '</form><script type="text/javascript">document.f1.submit();</script></body></html>');
-						res.end();
-						console.log("Hi");
-					});
-				}
-			}
-		});
-
-})
-router.post("/:id/pay/callback", (req, res) => {
-	// Route for verifiying payment
-	console.log("Inside Call back");
-	console.log(req.body);
-	var response = "";
-	var checksumhash = req.body.CHECKSUMHASH;
-	// 	// delete post_data.CHECKSUMHASH;
-	var result = checksum_lib.verifychecksum(req.body, config.PaytmConfig.key, checksumhash);
-	console.log("Checksum Result => ", result, "\n");
-
-	// Set up the request
 
 
-	conn.query(
-		'SELECT * FROM Student WHERE Username=?', [req.user.username],
-		function (err, Sresult, fields) {
-			if (err)
-				console.log(err);
-			else {
-				//console.log(Sresult);
-
-				conn.query(
-					'REPLACE INTO Registrations (Reg_Id, Event_Id, Reg_USN, Reg_Date) values(?,?,?,?)', [ req.params.id+Sresult[0].USN, req.params.id, Sresult[0].USN, date],
-					function (err, Rresults, fields) {
-						if (err) {
-							console.log(err);
-							console.log("Hiiiiiiiiiiiiiiiiiiiii");
-							res.redirect("/movies/"+req.params.id+"/pay");
-						}
-						else {
-							console.log(Rresults);
-							conn.query(
-								'SELECT * FROM Registrations WHERE Event_Id=? AND Reg_USN=?', [req.params.id, Sresult[0].USN],
-								function (err1, RESULTS, fields) {
-									if (!err) {
-										//console.log(RESULTS);
-										conn.query('INSERT INTO Payments values(?,?,?,?)', [req.body.TXNID, RESULTS[0].Reg_Id, req.body.TXNAMOUNT, req.body.TXNDATE], function (err2, Presults, fields) {
-											if (!err) {
-												console.log(Presults );
-
-												req.flash("success", "ID: " + req.body.ORDERID + " Payment Successful");
-												
-												res.redirect("/movies");
-											}
-											else {
-												console.log("Hiiiiiiiiiiiiiiiiiiiiiiiiii")
-												console.log(err2);
-											}
-										});
-									}
-									else {
-										console.log("wrestdfgvhbjxsdcrftvgbyhnujimcfvgby");
-										console.log(err1);
-									}
-								}
-							);
-							//request.flash("sucess", "Successfully Registered");
-							//respond.redirect("/movies");
-						}
-					}
-				);
-			}
-
-		}
-
-	);
+// router.post("/:id/pay", middleware.isLoggedIn, [parseUrl, parseJson], (req, res) => {
+// 	var name, email;
+// 	conn.query(
+// 		'SELECT * FROM Student WHERE Username=?', [req.user.username],
+// 		function (err, Sresult, fields) {
+// 			if (err)
+// 				console.log(err);
+// 			else {
+// 				console.log(Sresult);
+// 				name = Sresult[0].Username;
+// 				email = Sresult[0].Email;
+// 				if (!req.body.eFee) {
+// 					res.status(400).send('Payment failed')
+// 				} else {
+// 					var params = {};
+// 					params['MID'] = config.PaytmConfig.mid;
+// 					params['WEBSITE'] = config.PaytmConfig.website;
+// 					params['CHANNEL_ID'] = 'WEB';
+// 					params['INDUSTRY_TYPE_ID'] = 'Retail';
+// 					params['ORDER_ID'] = 'TEST_' + new Date().getTime();
+// 					params['CUST_ID'] = shortid.generate();
+// 					params['TXN_AMOUNT'] = req.body.eFee;
+// 					params['CALLBACK_URL'] = 'http://localhost:3000/movies/' + req.params.id + '/pay/callback';
+// 					params['EMAIL'] = email;
+// 					console.log(email);
+// 					console.log(params);
+// 					checksum_lib.genchecksum(params, config.PaytmConfig.key, function (err, checksum) {
 
 
-	// post the data
+// 						var txn_url = "https://securegw-stage.paytm.in/theia/processTransaction"; // for staging
+// 						// var txn_url = "https://securegw.paytm.in/theia/processTransaction"; // for production
+
+// 						var form_fields = "";
+// 						for (var x in params) {
+// 							form_fields += "<input type='hidden' name='" + x + "' value='" + params[x] + "' >";
+// 						}
+// 						form_fields += "<input type='hidden' name='CHECKSUMHASH' value='" + checksum + "' >";
+
+// 						res.writeHead(200, { 'Content-Type': 'text/html' });
+// 						res.write('<html><head><title>Merchant Checkout Page</title></head><body><center><h1>Please do not refresh this page...</h1></center><form method="post" action="' + txn_url + '" name="f1">' + form_fields + '</form><script type="text/javascript">document.f1.submit();</script></body></html>');
+// 						res.end();
+// 						console.log("Hi");
+// 					});
+// 				}
+// 			}
+// 		});
+
+// })
+// router.post("/:id/pay/callback", (req, res) => {
+// 	// Route for verifiying payment
+// 	console.log("Inside Call back");
+// 	console.log(req.body);
+// 	var response = "";
+// 	var checksumhash = req.body.CHECKSUMHASH;
+// 	// 	// delete post_data.CHECKSUMHASH;
+// 	var result = checksum_lib.verifychecksum(req.body, config.PaytmConfig.key, checksumhash);
+// 	console.log("Checksum Result => ", result, "\n");
+
+// 	// Set up the request
 
 
 
 
 
-});
+// post the data
+
+
+
+
+
+// });
 
 
 // Edit Details

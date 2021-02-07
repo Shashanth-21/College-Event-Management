@@ -1,6 +1,6 @@
-/* body{
-	background:orange;
-} */
+html{
+	background-color:#85dcb8;
+} 
 
 hr{
     border: 0;
@@ -8,7 +8,10 @@ hr{
     background: #333;
     background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
-
+body
+{
+  background-color: #3c516e;
+} 
 
 .delete-form{
 	display:inline;
@@ -25,10 +28,10 @@ hr{
 
 .trademark{
         text-align: center;
-        background-color:#e9ecef;
+        background-color: #f6f0e5;
         padding: 3%;
     margin-top: 5%;
-    color: black;
+    color: #000000;
     font-weight: 300;
     font-size: larger;
     letter-spacing: 3px;
@@ -376,3 +379,35 @@ input[type=number]:placeholder {
   height: 1%;
 }
 
+#acc input
+{
+  margin-top: 0.5em !important;
+}
+
+.indexpage
+{
+  margin: 1em 1em;
+}
+#jumb
+{
+  background-color:#f1cfaa;
+  margin-top: 1em;
+  color: #000000;
+  border-radius: 0em;
+  margin-top: 0em;
+}
+.card
+{
+ background-color: #D8BBAA;
+ margin: 20px 20px #3c516e ;
+ border: 20px #3c516e;
+}
+#marq
+{
+  background-color: #3c516e;
+  height: fit-content;
+  color: #ffffff;
+  width: 100em;
+  margin-bottom: 0em;
+  
+}

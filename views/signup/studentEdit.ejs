@@ -3,31 +3,31 @@
 		<h5 class=" d-flex justify-content-center" style="padding-top: 1em;">
 			Update Your Details!
 		</h5>
-		<div class=row>
+		<div class=row id = "acc">
 			<form action="/MyAcc" class="mx-auto" method="POST">
 				<div class="form-group">
-					<input class="form-control " type="text" maxlength="20" name="sName" placeholder="Name"
+					<input class="form-control " type="text" maxlength="20" name="sName" pattern="[A-Z a-z]+" data-valiadation="alpha" placeholder="Name"
 						value="<%=data.SName%>" required>
 				</div>
 				<div class="form-group">
-					<input class="form-control " type="text" minlength="10" maxlength="10" name="sUsn" placeholder="USN"
+					<input class="form-control " type="text" minlength="10" maxlength="10" name="sUsn" pattern="[A-Z a-z 0-9]+"placeholder="USN"
 						value="<%=data.USN%>" required>
 				</div>
 				<div class="form-group">
-					<input class="form-control " type="email" name="sEmail" placeholder="USN" value="<%=data.Email%>"
+					<input class="form-control " type="email" name="sEmail" placeholder="Email" value="<%=data.Email%>"
 						required>
 				</div>
 				<div class="form-group">
-					<input class="form-control " type="text" name="sDepartment" placeholder="Department"
+					<input class="form-control " type="text" name="sDepartment"  pattern="[A-Z a-z]{3}"  placeholder="Department"
 						value="<%=data.Department%>" required>
 				</div>
 
 				<div class="form-group">
-					<input class="form-control " type="text" name="sSection" placeholder="Section"
+					<input class="form-control " type="text" maxlength="1" pattern="[A-Z]{1}" name="sSection" placeholder="Section"
 						value="<%=data.Section%>" required>
 				</div>
 				<div class="form-group">
-					<input class="form-control " type="number" name="sSemester" placeholder="Semester"
+					<input class="form-control " type="number" min="1" max="8" name="sSemester" placeholder="Semester"
 						value="<%=data.Semester%>" required>
 				</div>
 				<div class="form-group">
