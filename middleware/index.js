@@ -1,5 +1,5 @@
 var middlewareObject = {},
-	Movie 	= require("../models/movies"),
+	Movie 	= require("../models/events"),
 	Comment	= require("../models/comment");
 
 

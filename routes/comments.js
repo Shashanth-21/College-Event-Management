@@ -1,6 +1,6 @@
 var express = require("express"),
 	router	= express.Router({mergeParams:true}),
-	Movie 	= require("../models/movies"),
+	Movie 	= require("../models/events"),
 	middleware=require("../middleware"),
 	Comment	= require("../models/comment"),
 	conn = require('../dbConfig');
@@ -85,7 +85,7 @@ router.post("/",middleware.isLoggedIn,(request,respond)=>{
 					foundMovie.comments.push(new_comment);
 					foundMovie.save();
 					request.flash("success","Feedback Submitted");
-					respond.redirect("/movies/"+foundMovie.EventId);
+					respond.redirect("/events/"+foundMovie.EventId);
 				}
 			});
 		}
@@ -109,7 +109,7 @@ router.put("/:comment_id",middleware.checkCommentOwnership,(request,respond)=>{
 		if(err){
 			respond.redirect("back");
 		}else{
-			respond.redirect("/movies/"+request.params.id);
+			respond.redirect("/events/"+request.params.id);
 		}
 	});
 });
@@ -121,7 +121,7 @@ router.delete("/:comment_id",middleware.checkCommentOwnership,(request,respond)=
 			respond.redirect("back");
 		}else{
 			request.flash("success","Successfully deleted Feedback");
-			respond.redirect("/movies/"+request.params.id);
+			respond.redirect("/events/"+request.params.id);
 		}
 	});
 });

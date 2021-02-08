@@ -1,7 +1,7 @@
 var express = require("express"),
 	router = express.Router(),
 	User = require('../models/user.js'),
-	Movie = require("../models/movies"),
+	Movie = require("../models/events"),
 	Comment = require("../models/comment");
 const mysql = require('mysql2');
 var middleware = require("../middleware");
@@ -39,7 +39,7 @@ router.delete("/:id", middleware.isLoggedIn,(request, respond)=>
                     console.log(err);
                 console.log(results);
       
-                respond.redirect("/movies");
+                respond.redirect("/events");
             }			
     );
    }

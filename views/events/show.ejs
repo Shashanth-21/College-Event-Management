@@ -7,7 +7,7 @@
 				<p class="lead">OPTIONS</p>
 				<ul id="leftButton" class="list-group">
 					More </a>
-						<a class="selection" href="/movies/<%=movie.EventId%>/regs">
+						<a class="selection" href="/events/<%=movie.EventId%>/regs">
 							<li class="list-group-item active" style="padding: 2px; background-color: black; color: white; text-align: center;">Registration details</li>
 						</a>
 
@@ -47,7 +47,7 @@
 										<a class="btn btn-xs btn-default"
 											style="margin: 2px; text-align: center; background-color:black; color:white; width: 115px; "
 											href="<%=movie.EventId%>/edit">Edit</a>
-										<form class="delete-form" action="/movies/<%=movie.EventId%>?_method=DELETE"
+										<form class="delete-form" action="/events/<%=movie.EventId%>?_method=DELETE"
 											method="Post">
 											<button class="btn btn-xs btn-default  " style="margin: 2px; background-color: black; color:white;">Delete</button>
 											<%}%>
@@ -63,9 +63,9 @@
 					<hr>
 					<%if( currentUser && (currentUser.username==club.Admin_Id)){%>
 						<h3>Feedback	</h3>
-					<a href="/movies/<%=movie.EventId%>/comments/positive">Positive </a>
+					<a href="/events/<%=movie.EventId%>/comments/positive">Positive </a>
 					<p></p>
-					<a href="/movies/<%=movie.EventId%>/comments/negative">Negative</a>
+					<a href="/events/<%=movie.EventId%>/comments/negative">Negative</a>
 					<hr>
 					<%}%>
 				</div>

@@ -3,7 +3,7 @@
 	Payment Info 
 </h1>
 <div>
-	 <form action="/movies/<%=event.idEvents%>/pay" method="POST"> 
+	 <form action="/events/<%=event.idEvents%>/pay" method="POST"> 
 		
 		<div class="form-group" style="width: 8em ; margin-left: 26em;">
 			<p>Event Fee(INR):</p>
@@ -25,5 +25,5 @@
    	
 </div>
 
-<a href="/movies/<%=event.idEvents%>">Go Back </a>
+<a href="/events/<%=event.idEvents%>">Go Back </a>
 <% include ../partials/footer %>

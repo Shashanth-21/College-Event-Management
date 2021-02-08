@@ -9,7 +9,7 @@
 			<h1 class="display-4">Events</h1>
 			<p class="lead">All Upcoming Events in our college</p>
 			<% if(currentUser && currentUser.role=='Admin' ){ %>
-				<a class="btn btn-default btn-lg" style="background-color: black; color: white;" href="/movies/new"
+				<a class="btn btn-default btn-lg" style="background-color: black; color: white;" href="/events/new"
 					role="button">Add new event</a>
 				
 				<%}%>
@@ -32,7 +32,7 @@
 									<%= event.date%>
 								</p>
 							</div>
-							<a href="/movies/<%=event.idEvents%>" class="btn btn-xs btn-default" style="background-color: #D8BBAA; margin: 0.4em 3em;">More Info</a>
+							<a href="/events/<%=event.idEvents%>" class="btn btn-xs btn-default" style="background-color: #D8BBAA; margin: 0.4em 3em;">More Info</a>
 						</div>
 					</div>
 					<%})%>

@@ -3,9 +3,12 @@
 	Edit the Event <%=event.Name%>
 </h5>
 <div class=row>
-	<form action="/movies/<%=event.idEvents%>?_method=PUT" class="mx-auto" method="POST">
+	<form action="/events/<%=event.idEvents%>?_method=PUT" class="mx-auto" method="POST">
 		<div class="form-group">
 			<input class="form-control " type="text" name="eName" placeholder="Name" pattern="[A-Z a-z]+"  required value="<%=event.Name%>">
+		</div>
+		<div class="form-group">
+			<input class="form-control " type="url" name="eImage" placeholder="Image" required>
 		</div>
 		<p>Event Date</p>
 		<div class="form-group">
@@ -26,5 +29,5 @@
 		</div>
 	</form>
 </div>
-<a href="/movies">Go Back </a>
+<a href="/events">Go Back </a>
 <% include ../partials/footer %>

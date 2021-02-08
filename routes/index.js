@@ -3,7 +3,7 @@ var express = require("express"),
 	passport = require("passport"),
 	User = require('../models/user.js'),
 	LocalStrategy = require('passport-local'),
-	Movie = require("../models/movies"),
+	Movie = require("../models/events"),
 	Comment = require("../models/comment");
 const mysql = require('mysql2');
 var middleware = require("../middleware");
@@ -43,7 +43,7 @@ router.post("/register", (request, respond) => {
 
 		var renderFileLoc;
 		if (request.body.Role)
-			renderFileLoc = "register/company";
+			renderFileLoc = "register/club";
 		else
 			renderFileLoc = "register/student";
 
@@ -80,7 +80,7 @@ router.post("/register/student", middleware.isLoggedIn, (request, respond) => {
 				console.log(results);
 
 				request.flash("success", "Added Details successfully");
-				respond.redirect("/movies");
+				respond.redirect("/events");
 			}
 			// results contains rows returned by server
 			// console.log(fields); // fields contains extra meta data about results, if available
@@ -90,16 +90,16 @@ router.post("/register/student", middleware.isLoggedIn, (request, respond) => {
 
 });
 
-// signup details from company
-router.get("/register/company", (request, respond) => {
-	respond.render("signup/company");
+// signup details from club
+router.get("/register/club", (request, respond) => {
+	respond.render("signup/club");
 
 });
 
-router.post("/register/company", middleware.isLoggedIn, (request, respond) => {
+router.post("/register/club", middleware.isLoggedIn, (request, respond) => {
 
 	console.log("posted");
-	//respond.redirect("/movies");
+	//respond.redirect("/events");
 	const flag = 1;
 	console.log(request.user);
 	console.log(request.body);
@@ -112,12 +112,12 @@ router.post("/register/company", middleware.isLoggedIn, (request, respond) => {
 				console.log("Failure");
 				flag = 0;
 				request.flash('error', 'Club Name Should be Unique');
-				respond.redirect("company");
+				respond.redirect("club");
 			}
 			else {
 				console.log(results);
 				request.flash("success", "club details added successfully");
-				respond.redirect("/movies");
+				respond.redirect("/events");
 			}
 
 			// results contains rows returned by server
@@ -126,7 +126,7 @@ router.post("/register/company", middleware.isLoggedIn, (request, respond) => {
 	)
 
 	//request.flash("success", "Added Details Succesfully");
-	//respond.redirect("/movies");
+	//respond.redirect("/events");
 });
 
 //LOgin Form 
@@ -138,13 +138,13 @@ router.get("/login", (request, respond) => {
 
 //apk.post("/login", middleware,callback)
 router.post("/login", passport.authenticate(
-	"local", { successRedirect: "/movies", failureRedirect: "/login", failureFlash: "Invalid Username or Password", successFlash: "Logged in Successfully" }));
+	"local", { successRedirect: "/events", failureRedirect: "/login", failureFlash: "Invalid Username or Password", successFlash: "Logged in Successfully" }));
 
 //LogOut Route
 router.get("/logout", (request, respond) => {
 	request.flash("success", "logged you out");
 	request.logout();
-	respond.redirect("/movies");
+	respond.redirect("/events");
 });
 
 //result
@@ -182,9 +182,9 @@ router.get("/myAcc", middleware.isLoggedIn, (request, respond) => {
 				else
 				{
 					if( results.length==0)
-						respond.redirect("/register/company");
+						respond.redirect("/register/club");
 					else
-					respond.render("signup/companyEdit", { data: results[0], currentUser: request.user });
+					respond.render("signup/clubEdit", { data: results[0], currentUser: request.user });
 				}
 			}
 		);
@@ -214,7 +214,7 @@ router.post("/myAcc", middleware.isLoggedIn, (request, respond) => {
 				else {
 					console.log(results);
 					request.flash("success", "Details Updated");
-					respond.redirect("/movies");
+					respond.redirect("/events");
 				}
 
 			}
@@ -233,7 +233,7 @@ router.post("/myAcc", middleware.isLoggedIn, (request, respond) => {
 				else {
 					console.log(results);
 					request.flash("success", "Details Updated");
-					respond.redirect("/movies");
+					respond.redirect("/events");
 				}
 
 			}

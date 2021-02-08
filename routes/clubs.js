@@ -1,6 +1,6 @@
 var express = require("express"),
 	router = express.Router(),
-    Movie = require("../models/movies"),
+    Movie = require("../models/events"),
     middleware = require("../middleware"),
     conn = require('../dbConfig');
 

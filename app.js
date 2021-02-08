@@ -2,7 +2,7 @@ const express		= require('express'),
 	apk 			= express(),
 	bodyParser		= require('body-parser'),
 	mongoose 		= require('mongoose'),
-	Movie 			= require("./models/movies.js"),
+	Movie 			= require("./models/events.js"),
 	passport		= require("passport"),
 	LocalStrategy	= require('passport-local'),
 	methodOveride	= require('method-override'),
@@ -12,7 +12,7 @@ const express		= require('express'),
 	Comment 		= require("./models/comment.js");
 
 const commentRoutes = require("./routes/comments"),
-	moviesRoutes = require("./routes/movies"),
+	eventsRoutes = require("./routes/events"),
 	indexRoutes = require("./routes/index"),
 	clubRoutes = require("./routes/clubs"),
 	regRoutes = require("./routes/register");
@@ -22,7 +22,7 @@ const PORT = process.env.PORT ||3000;
 
 
 const mysql = require('mysql2');
-const { db } = require('./models/movies.js');
+const { db } = require('./models/events.js');
 const { request } = require('express');
  
 // create the connection to database
@@ -62,9 +62,9 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 apk.use("/",indexRoutes);
-apk.use("/movies",moviesRoutes);
+apk.use("/events",eventsRoutes);
 apk.use("/student",regRoutes);
-apk.use("/movies/:id/comments",commentRoutes);
+apk.use("/events/:id/comments",commentRoutes);
 apk.use("/clubs",clubRoutes);
 
 apk.get("*",(request,respond)=>{
