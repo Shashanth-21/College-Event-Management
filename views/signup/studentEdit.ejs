@@ -6,6 +6,8 @@
 		<div class=row id = "acc">
 			<form action="/MyAcc" class="mx-auto" method="POST">
 				<div class="form-group">
+					<label>*Must not conatain numbers, special character
+					</label>
 					<input class="form-control " type="text" maxlength="20" name="sName" pattern="[A-Z a-z]+" data-valiadation="alpha" placeholder="Name"
 						value="<%=data.SName%>" required>
 				</div>
@@ -14,14 +16,31 @@
 						value="<%=data.USN%>" required>
 				</div>
 				<div class="form-group">
-					<input class="form-control " type="email" name="sEmail" placeholder="Email" value="<%=data.Email%>"
+					<label for="email"> Enter you rvce email: </label>
+					<input class="form-control " type="email" name="sEmail" pattern=".+@rvce.edu.in"  placeholder="Email" value="<%=data.Email%>"
 						required>
 				</div>
+			
+				<p>Department:<%=data.Department%> </p>
 				<div class="form-group">
-					<input class="form-control " type="text" name="sDepartment"  pattern="[A-Z a-z]{3}"  placeholder="Department"
-						value="<%=data.Department%>" required>
+					<select class="form-control " type="text" name="sDepartment" placeholder="Department" value="<%=data.Department%>"  required>
+						<option value="">---</option>
+						<option value="Aerospace Engineering">Aerospace Engineering</option>
+						<option value="Biotechnology">Biotechnology</option>
+						<option value="Chemical Engineering">Chemical Engineering</option>
+						<option value="Civil Engineering">Civil Engineering</option>
+						<option value="Computer Science and Engineering">Computer Science and Engineering</option>
+						<option value="Electrical and Electronics Engineering">Electrical and Electronics Engineering</option>
+						<option value="Electrical and Electronics Engineering">Electrical and Electronics Engineering</option>
+						<option value="Electronics and Instrumentation Engineering">Electronics and Instrumentation Engineering</option>
+						<option value="Industrial Engineering and Management">Industrial Engineering and Management</option>
+						<option value="Information Science and Engineering">Information Science and Engineering</option>
+						<option value="Master of Computer Applications">Master of Computer Applications</option>
+						<option value="Mechanical Engineering">Mechanical Engineering</option>
+						<option value="Telecommunication Engineering">Telecommunication Engineering</option>
+						<option value="Basic Sciences">Basic Sciences</option>
+					</select>
 				</div>
-
 				<div class="form-group">
 					<input class="form-control " type="text" maxlength="1" pattern="[A-Z]{1}" name="sSection" placeholder="Section"
 						value="<%=data.Section%>" required>
@@ -31,7 +50,7 @@
 						value="<%=data.Semester%>" required>
 				</div>
 				<div class="form-group">
-					<input class="fadeIn Fourth" type="submit" value="Update">
+					<input class="fadeIn Fourth" type="submit" value="Update" style=" margin-left: 20em;">
 				</div>
 			</form>
 		</div>

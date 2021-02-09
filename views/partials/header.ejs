@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Events</title>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="/styleSheets/main.css">
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<style>
-		table,th,td {
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/styleSheets/main.css">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+		integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="Stylesheet" type="text/css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	
+	<style>
+		table,
+		th,
+		td {
 			border: 1px solid black;
 			border-collapse: collapse;
 		}
 
-		th,	td {
+		th,
+		td {
 			padding: 15px;
 		}
 
@@ -23,21 +35,23 @@
 			text-align: left;
 		}
 	</style>
-
 </head>
+
 <body>
-	<nav class="navbar  navbar-expand-lg navbar-light" style="background-color: #f6f0e5;">
-    <img src="https://upload.wikimedia.org/wikipedia/en/a/a7/RVCE_New_Logo.JPG" style="width: 1.2em; height: 1.2em;">
-	<a class="navbar-brand" href="/"> EMS<i class="material-icons">
-			events
+	<nav class="navbar  navbar-expand-lg navbar-light" style="background-color: #f6f0e5; ">
+		<img src="https://upload.wikimedia.org/wikipedia/en/a/a7/RVCE_New_Logo.JPG"
+			style="width: 1.2em; height: 1.2em;">
+		<a class="navbar-brand" href="/" > EMS<i class="material-icons">
+				events
 			</i></a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+					<a class="nav-link" href="/" style="color: #3d3d4e;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link" href="/events">Events </a>
@@ -45,35 +59,37 @@
 				<li class="nav-item active">
 					<a class="nav-link" href="/clubs">Clubs </a>
 				</li>
-            <%if( currentUser && currentUser.role=='student'){%>
-				<li class="nav-item active">
-					<a class="nav-link" href="/student">Registrations </a>
-				</li>
-				<%}%>
+				<%if( currentUser && currentUser.role=='student' ){%>
+					<li class="nav-item active">
+						<a class="nav-link" href="/student">Registrations </a>
+					</li>
+					<%}%>
 			</ul>
-			
+
 			<ul class=" navbar-nav">
-				
+
 				<%if(!currentUser){%>
-				<li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-				<li class="nav-item"><a class="nav-link" href="/register">Sign Up</a></li>
-				<%}else{%>
-				<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-				<li class="nav-item"><a class="nav-link" href="/events">Signed in as <%=currentUser.username%></a></li>
-				<li class="nav-item"><a class="nav-link" href="/myAcc"><i class="material-icons" style="font-size: large;">account_circle</i></a></li>
-				<%}%>
+					<li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+					<li class="nav-item"><a class="nav-link btn btn-xs btn-default" style=" color: white; background-color: #ea4c89; border-radius: 8px; padding: 10px 16px;" href="/register">Sign Up</a></li>
+					<%}else{%>
+						<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+						<li class="nav-item"><a class="nav-link" href="/events">Signed in as <%=currentUser.username%>
+							</a></li>
+						<li class="nav-item"><a class="nav-link" href="/myAcc"><i class="material-icons"
+									style="font-size: large;">account_circle</i></a></li>
+						<%}%>
 			</ul>
-				
+
 		</div>
-</nav>
-		<div>
-			<%if(error && error.length>0){%> <p class="alert alert-danger" role="alert"><%=error%></p><%}%>
-		<%if(success && success.length>0){%><p class="alert alert-success" role="alert"><%=success%></p><%}%>
-		</div>
-		
-
-
-
-
-
+	</nav>
+	<div>
+		<%if(error && error.length>0){%> <p class="alert alert-danger" role="alert">
+				<%=error%>
+			</p>
+			<%}%>
+				<%if(success && success.length>0){%><p class="alert alert-success" role="alert">
+						<%=success%>
+					</p>
+					<%}%>
+	</div>
 	

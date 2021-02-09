@@ -11,9 +11,9 @@
 
     <!-- Login Form -->
     <form action="/register" method="POST">
-      <input type="text" d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-				title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" maxlength="20"id="login" class="fadeIn second" name="username" placeholder="login">
-	  <input type="text" id="password" minlength="8" class="fadeIn third" name="password" placeholder="password">
+      <input type="text"  minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+      title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" id="login" class="fadeIn second" name="username" placeholder="login">
+	  <input type="text" id="password" title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" minlength="8" class="fadeIn third" name="password" placeholder="password">
 	  <div class="radio">
 			<label><input type="checkbox" name="Role" id="Rectuiter">Club Admin </label>
 		  </div>

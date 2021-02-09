@@ -1,16 +1,12 @@
 <% include ../partials/header %>
-<h5 class=" d-flex justify-content-center">
-	Payment Info 
-</h1>
-<div>
+
+<div class=" d-flex justify-content-center"  style=" margin: 2em 30em 10em; padding: auto; text-align: center;" >
 	 <form action="/events/<%=event.idEvents%>/pay" method="POST"> 
-		
-		<div class="form-group" style="width: 8em ; margin-left: 26em;">
-			<p>Event Fee(INR):</p>
-			<input class="form-control " type="text" name="eFee" placeholder="Fee" readonly value="<%=event.Fee%>">
-		</div>
-		<div style="margin-left: 26.5em;">
-		 <script  
+      <h5>Payment</h5>
+			<p >Event Fee(INR):</p>
+			<input class="form-control " type="text" name="eFee" placeholder="Fee"  readonly value="<%=event.Fee%>">	
+      <div style="margin-top: 0.5em; margin-left: 0.5rem;">
+        <script  
         src="//checkout.stripe.com/v2/checkout.js"
         class="stripe-button" 
         data-key="<%= key %>" 
@@ -20,9 +16,9 @@
         data-description="<%= event.Name%>" 
         data-locale="auto"> 
         </script> 
+
+      </div>
     </form> 
-		</div>
-   	
 </div>
 
 <a href="/events/<%=event.idEvents%>">Go Back </a>

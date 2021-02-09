@@ -1,9 +1,10 @@
 <% include ../partials/header %>
+
 <h1 class=" d-flex justify-content-center">
 	Editing The Feedback =>.
 </h1>
 <div class=row>
-	<form action="/movies/<%=movie%>/comments/<%=comment._id%>?_method=PUT" class="mx-auto" method="POST">
+	<form action="/events/<%=movie%>/comments/<%=comment._id%>?_method=PUT" class="mx-auto" method="POST">
 		<div class="form-group">
 			<input class="form-control " type="text" name="com[text]" placeholder="Feedback" value="<%=comment.text%>"required>
 		</div>
@@ -12,5 +13,5 @@
 		</div>
 	</form>
 </div>
-<a href="/movies">Go Back </a>
+<a href="/events">Go Back </a>
 <% include ../partials/footer %>

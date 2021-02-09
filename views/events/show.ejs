@@ -34,12 +34,12 @@
 						<p class="card-text">Reg Fee : <%=events.Fee%>
 						</p>
 
-						<% if(currentUser && currentUser.role=='student' && events.Fee==0) {%>
+						<% if(currentUser && currentUser.role=='student' && events.Fee==0 && Reg) {%>
 							<form action="<%=events.idEvents%>?_method=POST" method="Post">
 								<button class="btn btn-xs btn-default" style= "background-color: black ; color: white;">Register</button>
 							</form>
 
-							<%} else if( currentUser && currentUser.role=='student' && events.Fee>0 ) {%>
+							<%} else if( currentUser && currentUser.role=='student' && events.Fee>0 && Reg) {%>
 								<a href="<%=events.idEvents%>/pay" class="btn btn-xs btn-default" style="background-color:black; color: white;">Register</a>
 								<%}%>
 

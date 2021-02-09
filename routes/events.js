@@ -2,30 +2,19 @@ var express = require("express"),
 	router = express.Router(),
 	middleware = require("../middleware"),
 	Movie = require("../models/events");
-const { request } = require("express");
 const conn = require('../dbConfig');
-// Index Page 
 var today = new Date();
 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+var Last_Date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()+3;
 const https = require("https");
-const qs = require("querystring");
-var Paytm = require("paytmchecksum");
-const checksum_lib = require("../Paytm/checksum");
-const config = require("../Paytm/config");
-const shortid = require('shortid');
-const { SSL_OP_EPHEMERAL_RSA } = require("constants");
 
-const parseUrl = express.urlencoded({ extended: false });
-const parseJson = express.json({ extended: false });
-const bodyparser = require('body-parser');
-const path = require('path');
 const PUBLISHABLE_KEY = "pk_test_51I2K79A5JWiCHFlnwAHeXfeYKBhgR5oUVKISXK9nhLVZ4QonR9yt6gbKt2qGPD7bfyNuIlWmIkAYFOPwvFnylZBE00BJgjaZUL";
 const SECRET_KEY = "sk_test_51I2K79A5JWiCHFln7RDuFVcv9op2KO5nobrnI54Z9LQaarhR4PiBsQ5SRBfYj3OBhuXdEQW6fKGml9jI6Gh58n6y00JSvmh4GH";
 const stripe = require("stripe")(SECRET_KEY);
 router.get("/", (request, respond) => {
 
 	conn.query(
-		'SELECT * FROM Events ORDER BY date ',
+		'SELECT * FROM Events  ORDER BY date ',
 		function (err, results, fields) {
 			if (err)
 				console.log(err);
@@ -49,7 +38,7 @@ router.post("/", middleware.isLoggedIn, (request, respond) => {
 				console.log(request.user.username);
 				console.log(club);
 				conn.query(
-					'INSERT INTO Events(Name,date,Venue,Fee,Last_Date,Club_Code,Image) VALUES (?,?,?,?,?,?,?)', [body.eName, body.eDate, body.eVenue, body.eFee, body.eLDate, club[0].idClubs, body.eImage],
+					'INSERT INTO Events(Name,date,Venue,Fee,Club_Code,Image) VALUES (?,?,?,?,?,?)', [body.eName, body.eDate, body.eVenue, body.eFee, club[0].idClubs, body.eImage],
 					function (err, results, fields) {
 						if (err)
 							console.log(err);
@@ -125,13 +114,7 @@ router.post("/:id", middleware.isLoggedIn, (request, respond) => {
 
 // Show Page
 router.get("/:id", (request, respond) => {
-	// Movie.findById(request.params.movieId).populate("comments").exec(function(err,foundMovie){
-	// 	if (err){
-	// 	console.log(err);
-	// }else{
-	// 	respond.render("events/show",{movie:foundMovie, currentUser:request.user});
-	// }
-	// });
+	var reg = true;
 	Movie.findOne({ EventId: request.params.id }).populate("comments").exec(function (err, foundMovie) {
 		if (err) {
 			console.log(err);
@@ -153,7 +136,33 @@ router.get("/:id", (request, respond) => {
 									console.log(err);
 								else {
 									console.log(cresults);
-									respond.render("events/show", { events: results[0], club: cresults[0], currentUser: request.user, movie: foundMovie });
+									conn.query('select USN from Student WHERE Student.USN IN (select Reg_USN from Registrations where Registrations.Event_Id=?) and Student.username=?',[request.params.id, request.user.username], function( err1, res1, fields){
+										if( err1)
+										{
+											console.log(err1);
+										}
+										else
+										{
+											if( res1.length==0 )
+											{
+												
+												console.log("Not reg yet");
+												respond.render("events/show", { events: results[0], club: cresults[0], currentUser: request.user, movie: foundMovie, Reg: true });
+
+											}
+												
+											else
+											{
+												
+												console.log("Already registered");
+												respond.render("events/show", { events: results[0], club: cresults[0], currentUser: request.user, movie: foundMovie, Reg: false });
+											
+											}
+												
+											
+										}
+									})
+									
 								}
 							}
 						);
@@ -301,7 +310,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (request, respond) => {
 // //Backend
 router.put("/:id", middleware.isLoggedIn, (request, respond) => {
 	const body = request.body;
-	conn.query('UPDATE  Events SET Name=?,date=?,Venue=?,Fee=?,Last_Date=?,Image=? WHERE idEvents=?', [body.eName, body.eDate, body.eVenue, body.eFee, body.eLDate,body.eImage, request.params.id], function (err, results, fields) {
+	conn.query('UPDATE  Events SET Name=?,date=?,Venue=?,Fee=?,Image=? WHERE idEvents=?', [body.eName, body.eDate, body.eVenue, body.eFee,body.eImage, request.params.id], function (err, results, fields) {
 		if (err) {
 			console.log(err);
 			respond.redirect("/events");

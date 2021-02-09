@@ -1,11 +1,13 @@
 <% include ../partials/header %>
 
-<h5 class=" d-flex justify-content-center" style="padding-top: 1em;">
+<h5 class=" d-flex justify-content-center" style="padding-top: 1em; padding-bottom: 1em;">
 	Add Event
 </h5>
 <div class=row>
 	<form action="/events" class="mx-auto" method="POST">
 		<div class="form-group">
+			<label>*Must not conatain numbers, special character
+			</label>
 			<input class="form-control " type="text" name="eName" placeholder="Name" pattern="[A-Z a-z]+"  required>
 		</div>
 		<div class="form-group">
@@ -13,20 +15,17 @@
 		</div>
 		<label>Date of Event</label>
 		<div class="form-group">
-			<input class="form-control " id="datefield" type="date" name="eDate" placeholder="EventDate"name="trip-start" min="" max="" required>
+			<input class="form-control " id="dateControl" type="date" name="eDate" placeholder="EventDate"required>
 		</div>
 		<div class="form-group">
-			<input class="form-control " type="text" name="eVenue" placeholder="Venue" required>
-		</div>
-		<label>Last Date for Registration</label>
-		<div class="form-group">
-			<input class="form-control " id="datefield" type="date" name="eLDate" placeholder="last date (yyyy-mm-dd) format" name="trip-start" min="" max="" required>
+			<input class="form-control " type="text" name="eVenue" placeholder="Venue" pattern="[A-Z a-z]+" required>
 		</div>
 		<div class="form-group">
+			<label>Enter(0) for free events</label>
 			<input class="form-control " type="number" min="0" maxlength="10000" name="eFee" placeholder="Fee" required>
 		</div>
 		<div class="form-group">
-			<input class="fadeIn Fourth" type="submit">
+			<input class="fadeIn Fourth" type="submit" style="margin-left: 10em;">
 		</div>
 	</form>
 </div>

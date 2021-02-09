@@ -5,27 +5,27 @@
 <div class=row>
 	<form action="/events/<%=event.idEvents%>?_method=PUT" class="mx-auto" method="POST">
 		<div class="form-group">
+			<label>*Must not conatain numbers, special character
+			</label>
 			<input class="form-control " type="text" name="eName" placeholder="Name" pattern="[A-Z a-z]+"  required value="<%=event.Name%>">
 		</div>
 		<div class="form-group">
-			<input class="form-control " type="url" name="eImage" placeholder="Image" required>
+			<input class="form-control " type="url" name="eImage" placeholder="Image" required value="<%=event.Image%>">
 		</div>
-		<p>Event Date</p>
+		<label for="date">Date of Event
+		</label
 		<div class="form-group">
-			<input class="form-control " type="date" name="eDate" placeholder="EventDate" name="trip-start" min="" max="" name="trip-start" min="" max=""  required value="<%=event.date%>">
+			<input class="form-control " type="date" id="dateControl"  name="eDate" placeholder="EventDate"  required value="<%=event.date%>">
 		</div>
 		<div class="form-group">
 			<input class="form-control " type="text" name="eVenue" placeholder="Venue"  pattern="[A-Z a-z]+"  required value="<%=event.Venue%>">
 		</div>
-		<p>Last Date for Reg</p>
-		<div class="form-group">
-			<input class="form-control " type="date" name="eLDate" placeholder="Last Date" name="trip-start" min="" max="" pattern="[A-Z a-z]+"  required value="<%=event.Last_date%>">
-		</div>
+		
 		<div class="form-group">
 			<input class="form-control " type="number" type="number" min="0" maxlength="10000" name="eFee"  name="eFee" placeholder="Fee" required value="<%=event.Fee%>">
 		</div>
 		<div class="form-group">
-			<input class="btn  form-control btn-primary" type="submit">
+			<input class="fadeIn fourth" type="submit">
 		</div>
 	</form>
 </div>
