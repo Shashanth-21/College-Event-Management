@@ -4,9 +4,16 @@ var express = require("express"),
 	Movie = require("../models/events");
 const conn = require('../dbConfig');
 var today = new Date();
-var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-var Last_Date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()+3;
-const https = require("https");
+
+
+var month = today.getMonth() + 1;
+var day = today.getDate();
+var year = today.getFullYear();
+if (month < 10)
+	month = '0' + month.toString();
+if (day < 10)
+	day = '0' + day.toString();
+var date = year + '-' + month + '-' + day;
 
 const PUBLISHABLE_KEY = "pk_test_51I2K79A5JWiCHFlnwAHeXfeYKBhgR5oUVKISXK9nhLVZ4QonR9yt6gbKt2qGPD7bfyNuIlWmIkAYFOPwvFnylZBE00BJgjaZUL";
 const SECRET_KEY = "sk_test_51I2K79A5JWiCHFln7RDuFVcv9op2KO5nobrnI54Z9LQaarhR4PiBsQ5SRBfYj3OBhuXdEQW6fKGml9jI6Gh58n6y00JSvmh4GH";
@@ -113,8 +120,8 @@ router.post("/:id", middleware.isLoggedIn, (request, respond) => {
 
 
 // Show Page
-router.get("/:id", (request, respond) => {
-	var reg = true;
+router.get("/:id", middleware.isLoggedIn, (request, respond) => {
+
 	Movie.findOne({ EventId: request.params.id }).populate("comments").exec(function (err, foundMovie) {
 		if (err) {
 			console.log(err);
@@ -136,33 +143,43 @@ router.get("/:id", (request, respond) => {
 									console.log(err);
 								else {
 									console.log(cresults);
-									conn.query('select USN from Student WHERE Student.USN IN (select Reg_USN from Registrations where Registrations.Event_Id=?) and Student.username=?',[request.params.id, request.user.username], function( err1, res1, fields){
-										if( err1)
-										{
+									conn.query('select USN from Student WHERE Student.USN IN (select Reg_USN from Registrations where Registrations.Event_Id=?) and Student.username=?', [request.params.id, request.user.username], function (err1, res1, fields) {
+										if (err1) {
 											console.log(err1);
 										}
-										else
-										{
-											if( res1.length==0 )
-											{
-												
+										else {
+
+											console.log(res1.length + "sdfghjklkjhgfdsdfghjklkjhg");
+											console.log(today);
+											console.log(date);
+											console.log(results[0].date);
+											console.log(results[0].date > date);
+											if (res1.length == 0 && (results[0].date > date)) {
+
 												console.log("Not reg yet");
-												respond.render("events/show", { events: results[0], club: cresults[0], currentUser: request.user, movie: foundMovie, Reg: true });
+												respond.render("events/show", { events: results[0], club: cresults[0], currentUser: request.user, movie: foundMovie, Reg: true, Comment: false });
 
 											}
-												
-											else
-											{
-												
-												console.log("Already registered");
-												respond.render("events/show", { events: results[0], club: cresults[0], currentUser: request.user, movie: foundMovie, Reg: false });
-											
+											else if (res1.length == 0 && (results[0].date < date)) {
+												respond.render("events/show", { events: results[0], club: cresults[0], currentUser: request.user, movie: foundMovie, Reg: false, Comment: false });
 											}
-												
-											
+											else {
+
+												console.log("Already registered");
+												if (results[0].date > date) {
+
+													respond.render("events/show", { events: results[0], club: cresults[0], currentUser: request.user, movie: foundMovie, Reg: false, Comment: false });
+												}
+												else {
+													respond.render("events/show", { events: results[0], club: cresults[0], currentUser: request.user, movie: foundMovie, Reg: false, Comment: true });
+												}
+
+											}
+
+
 										}
 									})
-									
+
 								}
 							}
 						);
@@ -182,14 +199,10 @@ router.get("/:id/regs", middleware.isLoggedIn, (request, respond) => {
 
 	conn.query('SELECT * FROM Registrations JOIN Student ON Registrations.Reg_USN = Student.USN AND Registrations.Event_Id = ?', [request.params.id], function (err, results, fields) {
 
-		if (!err) {
-			console.log(results);
-			respond.render("events/regs", { stdeve: results, currentUser: request.user });
-		}
-		else {
+		if (err)
 			console.log(err);
-			respond.redirect("/events");
-		}
+		respond.render("events/regs", { stdeve: results, currentUser: request.user, id: request.params.id });
+
 	});
 
 });
@@ -236,7 +249,7 @@ router.post("/:id/pay", function (req, res) {
 					.then((customer) => {
 
 						return stripe.charges.create({
-							amount: req.body.eFee*100,    // Charing Rs 25 
+							amount: req.body.eFee * 100,    // Charing Rs 25 
 							description: "Event Fee",
 							currency: 'INR',
 							customer: customer.id
@@ -259,9 +272,9 @@ router.post("/:id/pay", function (req, res) {
 										function (err1, RESULTS, fields) {
 											if (!err) {
 												//console.log(RESULTS);
-												conn.query('INSERT INTO Payments values(?,?,?,?)', [RESULTS[0].Reg_Id+req.params.id+date, RESULTS[0].Reg_Id, req.body.eFee, date], function (err2, Presults, fields) {
+												conn.query('INSERT INTO Payments values(?,?,?,?)', [RESULTS[0].Reg_Id + req.params.id + date, RESULTS[0].Reg_Id, req.body.eFee, date], function (err2, Presults, fields) {
 													if (!err) {
-														console.log(Presults);				
+														console.log(Presults);
 													}
 													else {
 														console.log("Hiiiiiiiiiiiiiiiiiiiiiiiiii")
@@ -277,18 +290,18 @@ router.post("/:id/pay", function (req, res) {
 									);
 								}
 							});
-						})
-								.catch((err) => {
-								res.send(err)    // If some error occurs 
-							});
-					}
+					})
+					.catch((err) => {
+						res.send(err)    // If some error occurs 
+					});
+			}
 
-				//request.flash("sucess", "Successfully Registered");
-				//respond.redirect("/events");
-			});
-			req.flash("success","Thanks for registering to the event");
-			res.redirect("/events");
-	});
+			//request.flash("sucess", "Successfully Registered");
+			//respond.redirect("/events");
+		});
+	req.flash("success", "Thanks for registering to the event");
+	res.redirect("/events");
+});
 
 
 
@@ -310,7 +323,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (request, respond) => {
 // //Backend
 router.put("/:id", middleware.isLoggedIn, (request, respond) => {
 	const body = request.body;
-	conn.query('UPDATE  Events SET Name=?,date=?,Venue=?,Fee=?,Image=? WHERE idEvents=?', [body.eName, body.eDate, body.eVenue, body.eFee,body.eImage, request.params.id], function (err, results, fields) {
+	conn.query('UPDATE  Events SET Name=?,date=?,Venue=?,Fee=?,Image=? WHERE idEvents=?', [body.eName, body.eDate, body.eVenue, body.eFee, body.eImage, request.params.id], function (err, results, fields) {
 		if (err) {
 			console.log(err);
 			respond.redirect("/events");

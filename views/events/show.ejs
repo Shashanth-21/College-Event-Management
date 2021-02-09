@@ -3,16 +3,18 @@
 	<div class="container">
 		<div class="row mt-5">
 			<div class="col-md-3">
-					<%if( currentUser && (currentUser.username==club.Admin_Id) ){%>
-				<p class="lead">OPTIONS</p>
-				<ul id="leftButton" class="list-group">
-					More </a>
+				<%if( currentUser && (currentUser.username==club.Admin_Id) ){%>
+					<p class="lead">OPTIONS</p>
+					<ul id="leftButton" class="list-group">
+						More </a>
 						<a class="selection" href="/events/<%=movie.EventId%>/regs">
-							<li class="list-group-item active" style="padding: 2px; background-color: black; color: white; text-align: center;">Registration details</li>
+							<li class="list-group-item active"
+								style="padding: 2px; background-color: black; color: white; text-align: center;">
+								Registration details</li>
 						</a>
 
 						<%}%>
-				</ul>
+					</ul>
 			</div>
 			<div class="col-md-9">
 				<div class="card ">
@@ -24,23 +26,25 @@
 						<p class="card-text">Organized by <%=club.ClubName%>
 						</p>
 						<hr>
-						<img class = "card-img-top" src="<%=events.Image%>">
+						<img class="card-img-top" src="<%=events.Image%>">
 						<p class="card-text">Venue : <%=events.Venue%>
 						</p>
 						<p class="card-text">Date : <%=events.date%>
 						</p>
-						<p class="card-text">Last Date: <%=events.Last_date%>
-						</p>
+
 						<p class="card-text">Reg Fee : <%=events.Fee%>
 						</p>
 
-						<% if(currentUser && currentUser.role=='student' && events.Fee==0 && Reg) {%>
+						<% if(currentUser && currentUser.role=='student' && events.Fee==0 && Reg && !Comment) {%>
 							<form action="<%=events.idEvents%>?_method=POST" method="Post">
-								<button class="btn btn-xs btn-default" style= "background-color: black ; color: white;">Register</button>
+								<button class="btn btn-xs btn-default"
+									style="background-color: black ; color: white;">Register</button>
 							</form>
 
-							<%} else if( currentUser && currentUser.role=='student' && events.Fee>0 && Reg) {%>
-								<a href="<%=events.idEvents%>/pay" class="btn btn-xs btn-default" style="background-color:black; color: white;">Register</a>
+							<%} else if( currentUser && currentUser.role=='student' && events.Fee>0 && Reg && !Comment)
+								{%>
+								<a href="<%=events.idEvents%>/pay" class="btn btn-xs btn-default"
+									style="background-color:black; color: white;">Register</a>
 								<%}%>
 
 									<%if(currentUser && (currentUser.username==club.Admin_Id)){%>
@@ -49,25 +53,26 @@
 											href="<%=movie.EventId%>/edit">Edit</a>
 										<form class="delete-form" action="/events/<%=movie.EventId%>?_method=DELETE"
 											method="Post">
-											<button class="btn btn-xs btn-default  " style="margin: 2px; background-color: black; color:white;">Delete</button>
+											<button class="btn btn-xs btn-default  "
+												style="margin: 2px; background-color: black; color:white;">Delete</button>
 											<%}%>
 										</form>
 					</div>
 				</div>
 				<div class="card-footer text-muted">
-					
-					<%if( currentUser && currentUser.role=='student' ) {%> 
-					<a href="<%=movie.EventId%>/comments/new" class="btn btn-outline-secondary text-right">Add
-						Feedback</a>
+
+					<%if( currentUser && currentUser.role=='student' && !Reg && Comment) {%>
+						<a href="<%=movie.EventId%>/comments/new" class="btn btn-outline-secondary text-right">Add
+							Feedback</a>
 						<%}%>
-					<hr>
-					<%if( currentUser && (currentUser.username==club.Admin_Id)){%>
-						<h3>Feedback	</h3>
-					<a href="/events/<%=movie.EventId%>/comments/positive">Positive </a>
-					<p></p>
-					<a href="/events/<%=movie.EventId%>/comments/negative">Negative</a>
-					<hr>
-					<%}%>
+							<hr>
+							<%if( currentUser && (currentUser.username==club.Admin_Id)){%>
+								<h3>Feedback </h3>
+								<a href="/events/<%=movie.EventId%>/comments/positive">Positive </a>
+								<p></p>
+								<a href="/events/<%=movie.EventId%>/comments/negative">Negative</a>
+								<hr>
+								<%}%>
 				</div>
 			</div>
 		</div>
