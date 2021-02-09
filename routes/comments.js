@@ -13,8 +13,24 @@ router.get("/new",middleware.isLoggedIn,(request,respond)=>{
 	if (err){
 		console.log(err);
 	}else{
+		Comment.findOne({"EventId": request.params.id, "author.username":request.user.username},function(err, foundComment){
+			if(err)
+			console.log(err);
+			else
+			{
+				console.log(foundComment);
+				if( foundComment)
+				{
+					request.flash("error","Feed back already given");
+					respond.redirect("/events/"+foundMovie.EventId);
+				}
+				else{
+					respond.render("comments/new",{movie:foundMovie, currentUser:request.user});
+				}
+			}
+		})
 		console.log(foundMovie);
-		respond.render("comments/new",{movie:foundMovie, currentUser:request.user});
+		
 	}
 	});
 });
@@ -72,7 +88,8 @@ router.post("/",middleware.isLoggedIn,(request,respond)=>{
 			{
 				text: ob.text,
 				sent: res.score,
-				author: nAuthor
+				author: nAuthor,
+				EventId: request.params.id
 			};
 
 			Comment.create(nComment,(err,new_comment)=>{
