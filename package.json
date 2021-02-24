@@ -28,7 +28,9 @@
     "shortid": "^2.2.16",
     "stripe": "^8.134.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^8.2.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"

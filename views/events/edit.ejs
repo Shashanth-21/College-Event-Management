@@ -2,7 +2,7 @@
 <h5 class=" d-flex justify-content-center" style="padding-top: 1em;">
 	Edit the Event <%=event.Name%>
 </h5>
-<div class=row>
+<div class="row" style="text-align: justify;">
 	<form action="/events/<%=event.idEvents%>?_method=PUT" class="mx-auto" method="POST">
 		<div class="form-group">
 			<label>*Must not conatain numbers, special character
@@ -21,11 +21,11 @@
 			<input class="form-control " type="text" name="eVenue" placeholder="Venue"  pattern="[A-Z a-z]+"  required value="<%=event.Venue%>">
 		</div>
 		
-		<div class="form-group">
-			<input class="form-control " type="number" type="number" min="0" maxlength="10000" name="eFee"  name="eFee" placeholder="Fee" required value="<%=event.Fee%>">
+		<div class="form-group"></div>
+			<input class="form-control "  type="number" min="0" maxlength="10000" name="eFee"  name="eFee" placeholder="Fee" required value="<%=event.Fee%>">
 		</div>
 		<div class="form-group">
-			<input class="fadeIn fourth" type="submit">
+			<input class="fadeIn fourth"  type="submit" style="margin-left: 60em;">
 		</div>
 	</form>
 </div>

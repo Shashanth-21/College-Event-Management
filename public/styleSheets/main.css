@@ -48,7 +48,6 @@ html {
 
 body {
   font-family: "Poppins", sans-serif;
-  height: 100vh;
 }
 
 a {
@@ -494,7 +493,7 @@ input[type=url]:placeholder {
   background-color: #3c516e;
   height: fit-content;
   color: #ffffff;
-  width: 100em;
+  width: 73.5em;
   margin-bottom: 0em;
   
 }

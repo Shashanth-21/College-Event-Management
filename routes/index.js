@@ -185,7 +185,7 @@ router.get("/myAcc", middleware.isLoggedIn, (request, respond) => {
 						respond.redirect("/register/club");
 					else
 					{
-						console.log(data);
+						
 						respond.render("signup/clubEdit", { data: results[0], currentUser: request.user });
 					}
 					

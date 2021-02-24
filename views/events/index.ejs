@@ -1,17 +1,16 @@
 <% include ../partials/header %>
 	<div>
-		<marquee width="60%" direction="right" height="100px" id="marq" >
+		<marquee direction="right" height="100px" id="marq" >
 			UPCOMING EVENTS: <% display.forEach((event)=>{ %>
-						*     <%=event.Name%>(<%=event.date%>)    *
+						    <%if( event.date > today_date){ %> * <%=event.Name%>  (<%=event.date%>)  * <%}%> 
 				<%})%>
 		</marquee>
 		<div class="jumbotron mt-5 bg-default" id="jumb">
-			<h1 class="display-4">Events</h1>
-			<p class="lead">All Upcoming Events in our college</p>
+			<h5 class="display-4">Events</h5>
+			<p class="lead">All  Events in our college</p>
 			<% if(currentUser && currentUser.role=='Admin' ){ %>
-				<a class="btn btn-default btn-lg" style="color: white; background-color: #ea4c89; border-radius: 8px; padding: 10px 16px;" href="/events/new"
+				<a class="btn btn-default btn-lg" style="color: white; background-color: #ea4c89; border-radius: 8px; padding: 10px 16px; font-size: small;" href="/events/new"
 					role="button">Add new event</a>
-				
 				<%}%>
 		</div>
 		<div class="indexpage">

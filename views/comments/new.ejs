@@ -5,12 +5,24 @@
 <div class=row>
 	<form action="/events/<%=movie.EventId%>/comments" class="mx-auto" method="POST">
 		<div class="form-group">
-			<input class="form-control " type="text" name="com[text]" placeholder="Feedback" required>
+			<textarea class="form-control " rows="5" maxlength="100" onkeypress="return lettersOnly(event)" type="text" name="com[text]" placeholder="Feedback" required></textarea>
 		</div>
 		<div class="form-group">
 			<input class="fadeIn fourth" type="submit">
 		</div>
 	</form>
+	<script>
+		function lettersOnly() 
+{
+            var charCode = event.keyCode;
+
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8||charCode==32)
+
+                return true;
+            else
+                return false;
+}
+	</script>
 </div>
 <a href="/events">Go Back </a>
 <% include ../partials/footer %>

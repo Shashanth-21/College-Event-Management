@@ -26,7 +26,7 @@ router.get("/", (request, respond) => {
 			if (err)
 				console.log(err);
 			console.log(results);
-			respond.render("events/index", { list: results, currentUser: request.user, display: results.slice(0, Math.min(3, results.length)) });
+			respond.render("events/index", { list: results, currentUser: request.user, display: results.slice(0, Math.min(3, results.length)), today_date: date });
 		}
 	);
 
