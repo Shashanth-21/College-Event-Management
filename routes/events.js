@@ -231,12 +231,12 @@ router.post("/:id/pay", function (req, res) {
 				res.redirect("/events");
 			}
 			else {
-				//console.log(Sresult);
+				console.log(Sresult);
 				console.log(req.body);
 				stripe.customers.create({
 					email: req.body.stripeEmail,
 					source: req.body.stripeToken,
-					name: Sresult[0].name,
+					name: Sresult[0].SName,
 					address: {
 						line1: 'TC 9/4 Old MES colony',
 						postal_code: '110092',
@@ -292,7 +292,8 @@ router.post("/:id/pay", function (req, res) {
 							});
 					})
 					.catch((err) => {
-						res.send(err)    // If some error occurs 
+						req.flash("Error", "Registering to the event failed");
+						res.redirect("/events");   // If some error occurs 
 					});
 			}
 

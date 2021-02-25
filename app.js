@@ -67,6 +67,7 @@ apk.use("/student",regRoutes);
 apk.use("/events/:id/comments",commentRoutes);
 apk.use("/clubs",clubRoutes);
 
+
 apk.get("*",(request,respond)=>{
 	respond.send("Use a Valid Url");
 });
