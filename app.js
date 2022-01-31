@@ -79,7 +79,7 @@ module.exports= ()=>{
   var conn= mysql.createConnection({
 	host: 'localhost',
   user: 'root',
-  password: 'Shashanth@21',
+  password: 'your_password',
   database: 'Event_Managemnet',
 	
   });
