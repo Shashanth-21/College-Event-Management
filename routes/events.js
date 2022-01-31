@@ -16,7 +16,7 @@ if (day < 10)
 var date = year + '-' + month + '-' + day;
 
 const PUBLISHABLE_KEY = "pk_test_51I2K79A5JWiCHFlnwAHeXfeYKBhgR5oUVKISXK9nhLVZ4QonR9yt6gbKt2qGPD7bfyNuIlWmIkAYFOPwvFnylZBE00BJgjaZUL";
-const SECRET_KEY = "sk_test_51I2K79A5JWiCHFln7RDuFVcv9op2KO5nobrnI54Z9LQaarhR4PiBsQ5SRBfYj3OBhuXdEQW6fKGml9jI6Gh58n6y00JSvmh4GH";
+const SECRET_KEY = "sk_test_your key";
 const stripe = require("stripe")(SECRET_KEY);
 router.get("/", (request, respond) => {
 
